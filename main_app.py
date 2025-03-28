@@ -100,7 +100,7 @@ def main():
 
     if st.button("Nomogram-based Total Points and DFS Prediction Using NAR-TRG Scores"):
         results = predict_points_and_survival(nar_trg_combined, diff_is_poor, ca19_over35)
-        st.write(f"**Nomogram Total Points**: {results['Points']:.2f} / 220")
+        st.write(f"**Nomogram Total Points**: {results['Points']:.2f} ")
         st.write(f"**Predicted 3-year DFS**: {results['DFS_3yr']*100:.1f}%")
         st.write(f"**Predicted 5-year DFS**: {results['DFS_5yr']*100:.1f}%")
 
