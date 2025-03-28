@@ -8,7 +8,7 @@ This model is derived from a cohort at Sun Yat-sen University Cancer Center and 
 
 Calculation methods for variables:
 1) NAR score: Calculated using Valentini's formula based on clinical T stage (cT), pathological T stage after neoadjuvant therapy (ypT), and pathological N stage (pN).
-2) TRG score: Modified Mandard grading system ranging from 1-4; grades 1-2 are classified as TRGlow, and grades 3-4 as TRGhigh.
+2) Tumor Regression Grade (TRG): modified Mandard grading system ranging from 1-4; grades 1-2 are classified as TRGlow, and grades 3-4 as TRGhigh.
 3) CA19-9: Considered positive if greater than 35 U/ml.
 4) Tumor differentiation: Categorized as Well, Moderate, or Poor.
 
@@ -67,12 +67,12 @@ def predict_points_and_survival(nar_trg: int, poorly_diff: int, ca19_flag: int) 
 
 # Streamlit Interface
 def main():
-    st.title("Nomogram-based Total Points and DFS Prediction Using NAR-TRG Scores")
+    st.title("NAR-TRG scores based nomogram for locally advanced rectal cancer DFS prediction")
 
     st.markdown("""
     **Instructions:**
     - Select clinical T stage (cT), pathological T stage after neoadjuvant therapy (ypT), and pathological N stage (pN).
-    - Choose Modified Mandard TRG grade (1-4).
+    - Choose modified Mandard Tumor Regression Grade (TRG) (1-4).
     - Select tumor differentiation status.
     - Input the numeric value of CA19-9.
     """)
@@ -85,7 +85,7 @@ def main():
     nar_group = classify_nar(nar_score)
     st.write(f"**NAR Score**: {nar_score:.2f} ({nar_group})")
 
-    trg_choice = st.selectbox("Modified Mandard TRG (1-4)", [1,2,3,4], index=2)
+    trg_choice = st.selectbox("modified Mandard Tumor Regression Grade (TRG) (1-4)", [1,2,3,4], index=2)
     trg_group = classify_trg(trg_choice)
     st.write(f"**TRG Group**: {trg_group}")
 
@@ -98,9 +98,9 @@ def main():
     ca19_input = st.number_input("CA19-9 Value (U/ml)", min_value=0.0, value=10.0, step=1.0)
     ca19_over35 = (ca19_input > 35.0)
 
-    if st.button("Compute Total Points and 3-year/5-year DFS"):
+    if st.button("Nomogram-based Total Points and DFS Prediction Using NAR-TRG Scores"):
         results = predict_points_and_survival(nar_trg_combined, diff_is_poor, ca19_over35)
-        st.write(f"**Nomogram Total Points**: {results['Points']:.2f} ")
+        st.write(f"**Nomogram Total Points**: {results['Points']:.2f} / 220")
         st.write(f"**Predicted 3-year DFS**: {results['DFS_3yr']*100:.1f}%")
         st.write(f"**Predicted 5-year DFS**: {results['DFS_5yr']*100:.1f}%")
 
